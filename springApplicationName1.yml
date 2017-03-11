@@ -128,7 +128,7 @@ spring:
 spring:
   profiles: dev 
   datasource:
-      url: jdbc:mysql://localhost:3306/dev
+      url: jdbc:mysql://localhost:3306/dev-BETH
       username: dbuser
       password: dbpass
       driver-class-name: com.mysql.jdbc.Driver
