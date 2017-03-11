@@ -246,7 +246,7 @@ spring:
     # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
     tomcat:
       min-idle: 5      # injected using setter of minIdle
-      max-active: 8    # injected using setter of maxActive
+      max-active: 7    # injected using setter of maxActive
       max-wait: 3000   # injected using setter of maxWait
       #minIdle: 5
       #maxActive: 9
