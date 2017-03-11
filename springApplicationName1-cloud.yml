@@ -236,8 +236,8 @@ spring:
     # https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html  
     url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
     username: ${vcap.services.p-mysql.credentials.username}
-    #password: ${vcap.services.p-mysql.credentials.password}   
-    password: abc  
+    password: ${vcap.services.p-mysql.credentials.password}   
+    # password: abc  
 
     # Search in "dependency" tab of pom.xml, I found Tomcat jar, and so, by default
     # spring-boot uses Tomcat connection pool. 
