@@ -233,12 +233,23 @@ spring:
     # @Profile("cloud")
     # public class RelationalCloudDataSourceConfigBeth {  .... }
       
-    # https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html  
-    url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
-    username: ${vcap.services.p-mysql.credentials.username}
-    password: ${vcap.services.p-mysql.credentials.password}   
-    # password: abc  
-
+    # https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html 
+    # Only use the following keys if you do not create a Cloud environment using @Bean Cloud cloud() 
+    # to disable spring boot auto configuration and Java Build Pack auto reconfiguration
+    # to take control for programmatically creating DataSource object 
+    # as suggested in 
+    # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry
+    #url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
+    #username: ${vcap.services.p-mysql.credentials.username}
+    #password: ${vcap.services.p-mysql.credentials.password}   
+    
+    # using the following keys when spring boot auto configuration and java build pack auto reconfiguration is disabled
+    # when you declare @Bean Cloud() cloud() as in this blog by Dave Syer
+    # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry#a-purely-declarative-approach
+    url: ${cloud.services.mysql.connection.jdbcurl}
+    username: ${cloud.services.mysql.connection.username}
+    password: ${cloud.services.mysql.connection.password}  
+    testOnBorrow: true
     # Search in "dependency" tab of pom.xml, I found Tomcat jar, and so, by default
     # spring-boot uses Tomcat connection pool. 
     # I set the connection pool size as below (type in spring.datasource.tomcat, the popup will suggest the options)
@@ -246,7 +257,7 @@ spring:
     # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
     tomcat:
       min-idle: 5      # injected using setter of minIdle
-      max-active: 14    # injected using setter of maxActive
+      max-active: 19    # injected using setter of maxActive
       max-wait: 3000   # injected using setter of maxWait
       #minIdle: 5
       #maxActive: 9
