@@ -128,14 +128,14 @@ spring:
 spring:
   profiles: dev 
   datasource:
-      url: jdbc:mysql://localhost:3306/dev-BETH
+      url: jdbc:mysql://localhost:3306/dev
       username: dbuser
       password: dbpass
       driver-class-name: com.mysql.jdbc.Driver
       tomcat:
         test-on-borrow: true
-      tomcat.max-wait: 10000
-      tomcat.max-active: 50
+        max-wait: 10000
+        max-active: 50
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     # when app is started with ddl-auto=update, if table not found, table will be created.
@@ -216,52 +216,74 @@ spring:
 
 ---
 spring:
-  # MUST RENAME this profile to "cloud" to when deploy app to CF - 
-  # This is because this profile uses cloud credentials, and if it is named other than "cloud"
-  # the VCAP_SERVICE values will not be available for this profile
-  # profiles: configure-datasource-for-cloud 
-  
   profiles: cloud
   jpa:
     generate-ddl: true
   datasource:
-    # from this: https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html
-    # url, username, password are from "cf env war-ztdd-rest-unittest-2-boot-to-CF"
-    # When the app is deployed in Cloud Foundry, the following class will read in url, username, password
-    # to create the correct DataSource with correct connection properties like max active connections
-    # @Configuration
-    # @Profile("cloud")
-    # public class RelationalCloudDataSourceConfigBeth {  .... }
-      
-    # https://www.javacodegeeks.com/2016/05/approaches-binding-spring-boot-application-service-cloud-foundry.html 
-    # Only use the following keys if you do not create a Cloud environment using @Bean Cloud cloud() 
-    # to disable spring boot auto configuration and Java Build Pack auto reconfiguration
-    # to take control for programmatically creating DataSource object 
-    # as suggested in 
-    # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry
-    url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
-    username: ${vcap.services.p-mysql.credentials.username}
-    password: ${vcap.services.p-mysql.credentials.password}   
-    
-    # using the following keys when spring boot auto configuration and java build pack auto reconfiguration is disabled
-    # when you declare @Bean Cloud() cloud() as in this blog by Dave Syer
-    # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry#a-purely-declarative-approach
+      url: jdbc:mysql://localhost:3306/dev
+      username: dbuser
+      password: dbpass
+      driver-class-name: com.mysql.jdbc.Driver
+      tomcat:
+        test-on-borrow: true
+        max-wait: 10000
+        max-active: 99
+
+    #-----------------------------------------------------------------------------------------------------------  
+    # This section creates CUSTOM DataSource by coding with Spring Cloud Connector
+    # This section can only work if the followings are true
+    # 1. application.yml is not on github repo (ie create application.yml in your project src/main/resources/)
+    # 2. the runtime environment must be able to resolve ${vcap.services....}, so you 
+    #    a. either set the environment variables or 
+    #    b. deploy the application in Cloud Foundry
+    # 3. you must have coded something similar to @Configuration class RelationalCloudDataSourceConfigBeth.java
+    #    @Profile("cloud")
+    #    @Bean Cloud cloud() - the bean disable the followings, and allow Spring Cloud Connector to
+    #    read in the following key/value pairs to create the custom DataSource ie including size of connection pool
+    #    https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry#dual-running-local-with-h2-in-the-cloud-with-mysql
+    #    a. disable spring boot auto configuration
+    #    b. disable Java Build Pack auto reconfiguration
+    #    c. The custom DataSource will be created from key/value pairs ${vcap.services....}
+    #
+    # url: ${vcap.services.p-mysql.credentials.jdbcUrl}
+    # username: ${vcap.services.p-mysql.credentials.username}
+    # password: ${vcap.services.p-mysql.credentials.password}  
+    # testOnBorrow: true
+    # tomcat:
+    #    test-on-borrow: true
+    #    max-wait: 10000
+    #    max-active: 99   
+        
+    #-----------------------------------------------------------------------------------------------------------    
+    # This section creates CUSTOM DataSource USING Spring Cloud Connector DECLARATIVE METHOD 
+    # This section only works if the followings are true
+    # 1. application.yml is not on github repo (ie create application.yml in your project src/main/resources/)
+    # 2. the runtime environment must be able to resolve ${cloud.service....}, so you 
+    #    a. either set the environment variables or 
+    #    b. deploy the application in Cloud Foundry
+    # 3. this method is DECLARATIVE, no code is needed ie no @Bean Cloud cloud()....
+    # 4. the key/value paris ${cloud.services....} 
+    #     a. disable spring boot auto configuration for DataSource
+    #     b. disable Java Build Pack auto reconfiguration for DataSource
+    #     c. create a DataSource based on the values provided by ${cloud.service....}
+    # 4. details is in Dave Syer blog
+    #     https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry#a-purely-declarative-approach
     # url: ${cloud.services.mysql.connection.jdbcurl}
     # username: ${cloud.services.mysql.connection.username}
     # password: ${cloud.services.mysql.connection.password}  
     # testOnBorrow: true
+    #  tomcat:
+    #    test-on-borrow: true
+    #    max-wait: 10000
+    #    max-active: 99   
+    
+    
     # Search in "dependency" tab of pom.xml, I found Tomcat jar, and so, by default
     # spring-boot uses Tomcat connection pool. 
     # I set the connection pool size as below (type in spring.datasource.tomcat, the popup will suggest the options)
     # https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-connect-to-production-database
     # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
-    tomcat:
-      min-idle: 5      # injected using setter of minIdle
-      max-active: 19    # injected using setter of maxActive
-      max-wait: 3000   # injected using setter of maxWait
-      #minIdle: 5
-      #maxActive: 9
-      #maxWait: 3000      
+
     # apache commons-dbcp connection pool properties
     # https://commons.apache.org/proper/commons-dbcp/configuration.html
     # search for "max-total"      
