@@ -239,9 +239,9 @@ spring:
     # to take control for programmatically creating DataSource object 
     # as suggested in 
     # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry
-    #url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
-    #username: ${vcap.services.p-mysql.credentials.username}
-    #password: ${vcap.services.p-mysql.credentials.password}   
+    url: ${vcap.services.p-mysql.credentials.jdbcUrl}  
+    username: ${vcap.services.p-mysql.credentials.username}
+    password: ${vcap.services.p-mysql.credentials.password}   
     
     # using the following keys when spring boot auto configuration and java build pack auto reconfiguration is disabled
     # when you declare @Bean Cloud() cloud() as in this blog by Dave Syer
