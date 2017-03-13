@@ -246,10 +246,10 @@ spring:
     # using the following keys when spring boot auto configuration and java build pack auto reconfiguration is disabled
     # when you declare @Bean Cloud() cloud() as in this blog by Dave Syer
     # https://spring.io/blog/2015/04/27/binding-to-data-services-with-spring-boot-in-cloud-foundry#a-purely-declarative-approach
-    url: ${cloud.services.mysql.connection.jdbcurl}
-    username: ${cloud.services.mysql.connection.username}
-    password: ${cloud.services.mysql.connection.password}  
-    testOnBorrow: true
+    # url: ${cloud.services.mysql.connection.jdbcurl}
+    # username: ${cloud.services.mysql.connection.username}
+    # password: ${cloud.services.mysql.connection.password}  
+    # testOnBorrow: true
     # Search in "dependency" tab of pom.xml, I found Tomcat jar, and so, by default
     # spring-boot uses Tomcat connection pool. 
     # I set the connection pool size as below (type in spring.datasource.tomcat, the popup will suggest the options)
