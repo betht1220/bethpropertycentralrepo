@@ -233,8 +233,6 @@ spring:
       #
         test-on-borrow: true
         max-wait: 10000
-        # with max-active=19, deployment to pcfdev will fail b/c current service plan has max at 10
-        # Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: User 'sYzZn0pUpOh3MO8e' has exceeded the 'max_user_connections' resource (current value: 10)
         max-active: 19
         min-idle: 47
 
