@@ -53,7 +53,7 @@ spring.mvc.view.suffix: .jsp
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 #***************************************************************************************************  
 spring:
-  profiles.active: dev # this is the active profile if deployed in traditional env.  However,
+  profiles.active: cloud # this is the active profile if deployed in traditional env.  However,
                        # when app is pushed to pcfdev, the java buildpack will auto-reconfigure
                        # this profile settings to run in Cloud Foundry (pcfdev) environment
 
