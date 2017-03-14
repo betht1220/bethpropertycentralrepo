@@ -220,15 +220,24 @@ spring:
   profiles: cloud
 #  jpa:
 #    generate-ddl: true
-#  datasource:
-#      url: jdbc:mysql://localhost:3306/dev
-#      username: dbuser
-#      password: dbpass
-#      driver-class-name: com.mysql.jdbc.Driver
-#      tomcat:
-#        test-on-borrow: true
-#        max-wait: 10000
-#        max-active: 99
+  datasource:
+      # DataSource is created by this class which gets the rdb credentials from manifest.yml 
+      # @Profile("cloud") @Configuration public class RDBDataSourceConfigBeth extends AbstractCloudConfig{....}
+      # the tomcat connection pool values are provided by user.  These values are read to POJO bean and
+      # reinitialize at runtime
+      # @Component 
+      # @RefreshScope 
+      # @ConfigurationProperties(prefix="spring.datasource.tomcat") 
+      # RelationalCloudPoolConfigSettingsBeth.java
+      tomcat:
+      # beth property rdbServiceId (ztddrestunittest2boottoCF-mysql is in manifest.yml, or, cf services)
+      # this setting is awkward!!!!
+        rdbServiceIdBeth: ztddrestunittest2boottoCF-mysql      
+      #
+        test-on-borrow: true
+        max-wait: 10000
+        max-active: 9
+        min-idle: 3
 
     #-----------------------------------------------------------------------------------------------------------  
     # This section creates CUSTOM DataSource by coding with Spring Cloud Connector
