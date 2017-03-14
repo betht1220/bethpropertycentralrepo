@@ -230,9 +230,6 @@ spring:
       # @ConfigurationProperties(prefix="spring.datasource.tomcat") 
       # RelationalCloudPoolConfigSettingsBeth.java
       tomcat:
-      # beth property rdbServiceId (ztddrestunittest2boottoCF-mysql is in manifest.yml, or, cf services)
-      # this setting is awkward!!!!
-        rdbServiceIdBeth: ztddrestunittest2boottoCF-mysql2      
       #
         test-on-borrow: true
         max-wait: 10000
