@@ -236,8 +236,8 @@ spring:
       #
         test-on-borrow: true
         max-wait: 10000
-        max-active: 9
-        min-idle: 3
+        max-active: 19
+        min-idle: 13
 
     #-----------------------------------------------------------------------------------------------------------  
     # This section creates CUSTOM DataSource by coding with Spring Cloud Connector
