@@ -233,7 +233,7 @@ spring:
       #
         test-on-borrow: true
         max-wait: 10000
-        max-active: 9
+        max-active: 8
         min-idle: 4
         sql-service-id: ztddrestunittest2boottoCF-mysql
 
