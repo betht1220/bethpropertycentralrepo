@@ -235,6 +235,7 @@ spring:
         max-wait: 10000
         max-active: 9
         min-idle: 4
+        sql-service-id: ztddrestunittest2boottoCF-mysql
 
     #-----------------------------------------------------------------------------------------------------------  
     # This section creates CUSTOM DataSource by coding with Spring Cloud Connector
